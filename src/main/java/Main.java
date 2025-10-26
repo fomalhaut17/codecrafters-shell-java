@@ -6,7 +6,11 @@ public class Main {
 
     while (true) {
       System.out.print("$ ");
-      String input = scanner.nextLine();
+      String input = scanner.next();
+      if ("exit".equals(input)) {
+        int code = scanner.nextInt();
+        System.exit(code);
+      }
       System.out.println(input + ": command not found");
     }
   }
