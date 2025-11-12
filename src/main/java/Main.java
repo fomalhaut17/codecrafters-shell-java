@@ -11,7 +11,11 @@ public class Main {
         int code = scanner.nextInt();
         System.exit(code);
       } else if ("echo".equals(input)) {
-        System.out.println(scanner.nextLine());
+        String parameters = scanner.nextLine();
+        if (parameters != null) {
+          parameters = parameters.trim();
+        }
+        System.out.println(parameters);
       } else {
         System.out.println(input + ": command not found");
       }
