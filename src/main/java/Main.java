@@ -10,8 +10,11 @@ public class Main {
       if ("exit".equals(input)) {
         int code = scanner.nextInt();
         System.exit(code);
+      } else if ("echo".equals(input)) {
+        System.out.println(scanner.nextLine());
+      } else {
+        System.out.println(input + ": command not found");
       }
-      System.out.println(input + ": command not found");
     }
   }
 }
