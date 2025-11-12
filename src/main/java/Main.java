@@ -6,18 +6,19 @@ public class Main {
 
     while (true) {
       System.out.print("$ ");
-      String input = scanner.next();
-      if ("exit".equals(input)) {
+      String command = scanner.next();
+
+      if ("exit".equals(command)) {
         int code = scanner.nextInt();
         System.exit(code);
-      } else if ("echo".equals(input)) {
+      } else if ("echo".equals(command)) {
         String parameters = scanner.nextLine();
         if (parameters != null) {
           parameters = parameters.trim();
         }
         System.out.println(parameters);
       } else {
-        System.out.println(input + ": command not found");
+        System.out.println(command + ": command not found");
       }
     }
   }
