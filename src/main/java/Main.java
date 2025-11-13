@@ -5,27 +5,34 @@ import java.util.Scanner;
 
 public class Main {
   private static List<String> builtinCommands = List.of("exit", "echo", "type");
+  private static String command;
+  private static String arguments;
+
+  private static void parse(String commandWithArguments) {
+    String[] splits = commandWithArguments.split("\s", 2);
+    command = splits[0];
+    arguments = null;
+    if (splits.length > 1) {
+      arguments = splits[1];
+    }
+  }
 
   public static void main(String[] args) throws Exception {
     Scanner scanner = new Scanner(System.in);
 
     while (true) {
       System.out.print("$ ");
-      String command = scanner.next();
+
+      String commandWithArguments = scanner.nextLine();
+      parse(commandWithArguments);
 
       if ("exit".equals(command)) {
-        int code = scanner.nextInt();
-        System.exit(code);
+        System.exit(Integer.parseInt(arguments));
       } else if ("echo".equals(command)) {
-        String parameters = scanner.nextLine();
-        if (parameters != null) {
-          parameters = parameters.trim();
-        }
-        System.out.println(parameters);
+        System.out.println(arguments);
       } else if ("type".equals(command)) {
-        String parameter = scanner.next();
-        if (builtinCommands.contains(parameter)) {
-          System.out.println(parameter + " is a shell builtin");
+        if (builtinCommands.contains(arguments)) {
+          System.out.println(arguments + " is a shell builtin");
         } else {
           String[] paths = System.getenv("PATH").split(File.pathSeparator);
           boolean findFlag = false;
@@ -36,8 +43,8 @@ public class Main {
             File[] listFiles = directory.listFiles();
             if (listFiles != null) {
               for (File file : listFiles) {
-                if (file.getName().equals(parameter) && file.canExecute()) {
-                  System.out.println(parameter + " is " + file.getAbsolutePath());
+                if (file.getName().equals(arguments) && file.canExecute()) {
+                  System.out.println(arguments + " is " + file.getAbsolutePath());
                   findFlag = true;
                   break outer;
                 }
@@ -46,11 +53,11 @@ public class Main {
           }
 
           if (!findFlag) {
-            System.out.println(parameter + ": not found");
+            System.out.println(arguments + ": not found");
           }
         }
       } else {
-        System.out.println(command + ": command not found");
+        System.out.println(commandWithArguments + ": command not found");
       }
     }
   }
