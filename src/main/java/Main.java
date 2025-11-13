@@ -39,7 +39,9 @@ public class Main {
             List<String> commands = new ArrayList<>();
             commands.add(command);
             if (arguments != null) {
-                commands.add(arguments);
+                for (String argument : arguments.split("\s")) {
+                    commands.add(argument);
+                }
             }
 
             ProcessBuilder pb = new ProcessBuilder(commands);
