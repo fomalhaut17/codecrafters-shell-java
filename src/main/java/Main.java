@@ -1,20 +1,12 @@
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
   private static List<String> builtinCommands = List.of("exit", "echo", "type");
-  private static String command;
-  private static String arguments;
 
-  private static void parse(String commandWithArguments) {
-    String[] splits = commandWithArguments.split("\s", 2);
-    command = splits[0];
-    arguments = null;
-    if (splits.length > 1) {
-      arguments = splits[1];
-    }
+  private static String[] parseCommand(String commandWithArguments) {
+    return commandWithArguments.split("\s", 2);
   }
 
   public static void main(String[] args) throws Exception {
@@ -24,7 +16,9 @@ public class Main {
       System.out.print("$ ");
 
       String commandWithArguments = scanner.nextLine();
-      parse(commandWithArguments);
+      String[] parts = parseCommand(commandWithArguments);
+      String command = parts[0];
+      String arguments = parts.length > 1 ? parts[1] : null;
 
       if ("exit".equals(command)) {
         System.exit(Integer.parseInt(arguments));
