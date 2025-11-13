@@ -46,8 +46,8 @@ public class Main {
           System.out.println(arguments + " is a shell builtin");
         } else {
           String[] paths = System.getenv("PATH").split(File.pathSeparator);
-          boolean findFlag = findInPath(arguments, paths, file -> file.getName().equals(arguments) && file.canExecute());
-          if (!findFlag) {
+          boolean isFound = findInPath(arguments, paths, file -> file.getName().equals(arguments) && file.canExecute());
+          if (!isFound) {
             System.out.println(arguments + ": not found");
           }
         }
