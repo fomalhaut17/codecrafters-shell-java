@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -9,7 +10,12 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class Main {
-    private static List<String> builtinCommands = List.of("exit", "echo", "type");
+    private static List<String> builtinCommands = List.of(
+        "echo",
+        "exit",
+        "pwd",
+        "type"
+    );
 
     private static String[] parseCommand(String commandWithArguments) {
         return commandWithArguments.split("\s", 2);
@@ -76,17 +82,18 @@ public class Main {
             String[] paths = System.getenv("PATH").split(File.pathSeparator);
 
             if (builtinCommands.contains(command)) {
-                if ("exit".equals(command)) {
-                    System.exit(Integer.parseInt(arguments));
-                } else if ("echo".equals(command)) {
-                    System.out.println(arguments);
-                } else if ("type".equals(command)) {
-                    if (builtinCommands.contains(arguments)) {
-                        System.out.println(arguments + " is a shell builtin");
-                    } else {
-                        boolean isFound = findFile(paths, arguments, f -> f.canExecute(), f -> System.out.println(arguments + " is " + f.getAbsolutePath()));
-                        if (!isFound) {
-                            System.out.println(arguments + ": not found");
+                switch(command) {
+                    case "echo" -> System.out.println(arguments);
+                    case "exit" -> System.exit(Integer.parseInt(arguments));
+                    case "pwd" -> System.out.println(Paths.get("").toAbsolutePath().toString());
+                    case "type" -> {
+                        if (builtinCommands.contains(arguments)) {
+                            System.out.println(arguments + " is a shell builtin");
+                        } else {
+                            boolean isFound = findFile(paths, arguments, f -> f.canExecute(), f -> System.out.println(arguments + " is " + f.getAbsolutePath()));
+                            if (!isFound) {
+                                System.out.println(arguments + ": not found");
+                            }
                         }
                     }
                 }
