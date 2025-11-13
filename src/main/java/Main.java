@@ -1,3 +1,5 @@
+import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,7 +27,27 @@ public class Main {
         if (builtinCommands.contains(parameter)) {
           System.out.println(parameter + " is a shell builtin");
         } else {
-          System.out.println(parameter + ": not found");
+          String[] paths = System.getenv("PATH").split(File.pathSeparator);
+          boolean findFlag = false;
+
+          outer:
+          for (String path : paths) {
+            File directory = new File(path);
+            File[] listFiles = directory.listFiles();
+            if (listFiles != null) {
+              for (File file : listFiles) {
+                if (file.getName().equals(parameter)) {
+                  System.out.println(parameter + " is " + file.getAbsolutePath());
+                  findFlag = true;
+                  break outer;
+                }
+              }
+            }
+          }
+
+          if (!findFlag) {
+            System.out.println(parameter + ": not found");
+          }
         }
       } else {
         System.out.println(command + ": command not found");
