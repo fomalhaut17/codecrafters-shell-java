@@ -36,7 +36,7 @@ public class Main {
             File[] listFiles = directory.listFiles();
             if (listFiles != null) {
               for (File file : listFiles) {
-                if (file.getName().equals(parameter)) {
+                if (file.getName().equals(parameter) && file.canExecute()) {
                   System.out.println(parameter + " is " + file.getAbsolutePath());
                   findFlag = true;
                   break outer;
