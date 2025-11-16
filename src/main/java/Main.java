@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +13,13 @@ import java.util.function.Predicate;
 
 public class Main {
     private static List<String> builtinCommands = List.of(
+        "cd",
         "echo",
         "exit",
         "pwd",
         "type"
     );
+    private static Path currentDirectory = Paths.get("");
 
     private static String[] parseCommand(String commandWithArguments) {
         return commandWithArguments.split("\s", 2);
@@ -83,9 +87,15 @@ public class Main {
 
             if (builtinCommands.contains(command)) {
                 switch(command) {
+                    case "cd" -> {
+                        Path inputPath = Paths.get(arguments);
+                        if (Files.isDirectory(inputPath)) {
+                            currentDirectory = inputPath;
+                        }
+                    }
                     case "echo" -> System.out.println(arguments);
                     case "exit" -> System.exit(Integer.parseInt(arguments));
-                    case "pwd" -> System.out.println(Paths.get("").toAbsolutePath().toString());
+                    case "pwd" -> System.out.println(currentDirectory.toAbsolutePath().toString());
                     case "type" -> {
                         if (builtinCommands.contains(arguments)) {
                             System.out.println(arguments + " is a shell builtin");
