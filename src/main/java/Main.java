@@ -91,6 +91,8 @@ public class Main {
                         Path inputPath = Paths.get(arguments);
                         if (Files.isDirectory(inputPath)) {
                             currentDirectory = inputPath;
+                        } else {
+                            System.out.println(arguments + ": No such file or directory");
                         }
                     }
                     case "echo" -> System.out.println(arguments);
